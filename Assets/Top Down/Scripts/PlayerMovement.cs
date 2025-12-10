@@ -12,9 +12,14 @@ public class PlayerMovement : MonoBehaviour
     //We've done this before, so I won't comment it
     
     public static PlayerMovement Player;
+    //TextMeshPro is a component that draws text on the screen.
+    //We use this one to show our score.
+   // public TextMeshPro ScoreText;
+
     
     public Rigidbody2D RB;
     public float Speed = 5;
+    public int Score = 0;
     public ProjectileController BulletPrefab;
 
     private void Awake()
@@ -63,12 +68,28 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D other)
-    {
+    {      
+        CoinScript coin = other.gameObject.GetComponent<CoinScript>();
         //If I walk into a monster or other hazard. . .
         if (other.gameObject.CompareTag("Hazard"))
         {
             //Lose the game!
             SceneManager.LoadScene("You Lose");
+            
+        }
+        //If it does, run the code block belows
+        if (coin != null)
+        {
+            //Tell the coin that you bumped into them so they can self destruct or whatever
+            coin.GetBumped();
+            //Make your score variable go up by one. . .
+           // Score++;
+            //And then update the game's score text
+           // UpdateScore();
+            Speed += 10;
         }
     }
+ 
+      
+    
 }
